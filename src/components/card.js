@@ -9,11 +9,7 @@ import {
 } from "react-native";
 
 export function Card({ data }) {
-  // console.log("Card ctx | data: ", data);
-  console.log(data);
   const { title, img_url } = data;
-
-  // console.log(getTextWidth());
 
   return (
     <View style={styles.container}>
@@ -31,8 +27,6 @@ export function Card({ data }) {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    // height: 280, //TODO
-
     backgroundColor: "#E5E5E5",
     borderRadius: 16,
   },
@@ -42,12 +36,11 @@ const styles = StyleSheet.create({
     borderTopLeftRadius: 16,
     borderTopRightRadius: 16,
     width: "100%",
-    // height: "80%",
   },
 
   textTitle: {
-    flex: 1,
     fontFamily: "Roboto",
     fontSize: 16,
+    padding: 2,
   },
 });

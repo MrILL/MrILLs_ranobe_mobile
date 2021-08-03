@@ -31,6 +31,8 @@ const styles = StyleSheet.create({
 
   itemContainer: {
     width: "50%",
+    height: 250,
+    // height: "100%",
     padding: 6,
   },
 });

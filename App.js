@@ -15,7 +15,7 @@ import { Card } from "./src/components/card";
 export default function App() {
   console.log("=================App=================");
 
-  const data = Array.from({ length: 10 }, (_, i) => {
+  const data = Array.from({ length: 50 }, (_, i) => {
     return {
       id: i,
       title: "Tensei shite inaka de slowlife wo okuritai",
@@ -27,7 +27,7 @@ export default function App() {
   const popularList = (
     <View style={styles.container}>
       {data.map((v) => (
-        <View style={styles.itemContainer}>
+        <View style={styles.itemContainer} key={v.id}>
           <Card data={v} />
         </View>
       ))}
