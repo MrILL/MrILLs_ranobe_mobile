@@ -10,7 +10,6 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     elevation: 4,
-    backgroundColor: "#FFF",
     borderRadius: 16,
   },
 

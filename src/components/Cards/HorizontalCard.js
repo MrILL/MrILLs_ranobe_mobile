@@ -11,7 +11,6 @@ const styles = StyleSheet.create({
     flex: 1,
     height: 230,
     elevation: 4,
-    backgroundColor: "#FFF",
     borderRadius: 16,
   },
 

@@ -31,7 +31,8 @@ export function FeedScreen({ navigation }) {
 
   const window = useWindowDimensions();
 
-  const cardOnPress = () => navigation.navigate("RanobeInfo");
+  const cardOnPress = (id) =>
+    navigation.navigate("RanobeInfo", { ranobeId: id });
 
   return (
     <View style={styles.container}>
@@ -42,14 +43,17 @@ export function FeedScreen({ navigation }) {
           renderItem={(v) => {
             return (
               <View
-                style={{
-                  marginLeft: 14,
-                  width: window.width * 0.8,
-                  paddingTop: 6,
-                  paddingBottom: 6,
-                }}
+                style={[
+                  styles.last_item_container,
+                  {
+                    width: window.width * 0.85,
+                  },
+                ]}
               >
-                <HorizontalCard data={v.item} onPress={() => cardOnPress()} />
+                <HorizontalCard
+                  data={v.item}
+                  onPress={() => cardOnPress(v.item.id)}
+                />
               </View>
             );
           }}
@@ -61,7 +65,7 @@ export function FeedScreen({ navigation }) {
         <View style={styles.popular_container}>
           {data.map((v) => (
             <View style={styles.popular_item_container} key={v.id}>
-              <VerticalCard data={v} onPress={() => cardOnPress()} />
+              <VerticalCard data={v} onPress={() => cardOnPress(v.id)} />
             </View>
           ))}
         </View>
@@ -83,7 +87,13 @@ const styles = StyleSheet.create({
     backgroundColor: "#FFE1CC",
     alignItems: "center",
     justifyContent: "center",
-    paddingTop: 30,
+    // paddingTop: 30,
+  },
+
+  last_item_container: {
+    marginLeft: 14,
+    paddingTop: 6,
+    paddingBottom: 6,
   },
 
   popular_container: {
