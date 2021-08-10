@@ -1,13 +1,9 @@
 import React from "react";
-import {
-  ScrollView,
-  StyleSheet,
-  View,
-  useWindowDimensions,
-} from "react-native";
+import { ScrollView, StyleSheet, View } from "react-native";
 import { MyText } from "../components/MyText";
 import { DomainIco } from "../components/DomainIco";
 
+//TODO use api
 const getData = (ranobeId) => {
   return {
     img_url:
@@ -44,9 +40,7 @@ const BoldText = (params) => {
   );
 };
 
-export function RanobeInfoScreen({ route }) {
-  const { ranobeId } = route.params;
-
+export function RanobeInfoScreen({ ranobeId }) {
   const ranobeData = getData(ranobeId);
 
   return (
@@ -56,7 +50,7 @@ export function RanobeInfoScreen({ route }) {
           ["Страна:", ranobeData.country],
           ["Год выпуска:", ranobeData.publish_year],
           ["Статус перевода:", ranobeData.translate_status],
-          ["Жанр:", ranobeData.genre.reduce((acc, v) => acc + " " + v)],
+          ["Жанр:", ranobeData.genre.reduce((acc, v) => acc + ", " + v)],
           ["Автор:", ranobeData.author],
         ].map((pair) => (
           <View style={styles.line_container} key={pair[0]}>

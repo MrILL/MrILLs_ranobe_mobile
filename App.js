@@ -3,7 +3,7 @@ import { StatusBar } from "expo-status-bar";
 import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { FeedScreen } from "./src/navigation/FeedScreen";
-import { RanobeInfoScreen } from "./src/navigation/RanobeInfoScreen";
+import { RanobeInfoNavigation } from "./src/navigation/RanobeInfoNavigation";
 
 const Stack = createNativeStackNavigator();
 
@@ -15,7 +15,7 @@ export default function App() {
       <NavigationContainer>
         <Stack.Navigator initialRouteName="Feed">
           <Stack.Screen name="Feed" component={FeedScreen} />
-          <Stack.Screen name="RanobeInfo" component={RanobeInfoScreen} />
+          <Stack.Screen name="RanobeInfo" component={RanobeInfoNavigation} />
         </Stack.Navigator>
       </NavigationContainer>
       <StatusBar style="auto" />
