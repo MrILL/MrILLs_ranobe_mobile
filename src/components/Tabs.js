@@ -1,44 +1,5 @@
 import * as React from "react";
-import { Animated, StyleSheet, View, Platform, Pressable } from "react-native";
-
-/////////////////////////////////////////////////////////////////////////////
-/////////////////////////////////////////////////////////////////////////////
-/////////////////////////////////////////////////////////////////////////////
-/////////////////////////////////////////////////////////////////////////////
-/////////////////////////////////////////////////////////////////////////////
-
-const ANDROID_VERSION_LOLLIPOP = 21;
-const ANDROID_SUPPORTS_RIPPLE =
-  Platform.OS === "android" && Platform.Version >= ANDROID_VERSION_LOLLIPOP;
-
-function PlatformPressable({
-  android_ripple,
-  pressColor = "rgba(0, 0, 0, .32)",
-  pressOpacity,
-  style,
-  ...rest
-}) {
-  return (
-    <Pressable
-      android_ripple={
-        ANDROID_SUPPORTS_RIPPLE
-          ? { color: pressColor, ...android_ripple }
-          : undefined
-      }
-      style={({ pressed }) => [
-        { opacity: pressed && !ANDROID_SUPPORTS_RIPPLE ? pressOpacity : 1 },
-        typeof style === "function" ? style({ pressed }) : style,
-      ]}
-      {...rest}
-    />
-  );
-}
-
-/////////////////////////////////////////////////////////////////////////////
-/////////////////////////////////////////////////////////////////////////////
-/////////////////////////////////////////////////////////////////////////////
-/////////////////////////////////////////////////////////////////////////////
-/////////////////////////////////////////////////////////////////////////////
+import { Animated, StyleSheet, View, Pressable } from "react-native";
 
 const DEFAULT_ACTIVE_COLOR = "rgba(255, 255, 255, 1)";
 const DEFAULT_INACTIVE_COLOR = "rgba(255, 255, 255, 0.7)";
@@ -120,50 +81,30 @@ export class TabBarItem extends React.Component {
       tabIndex
     );
 
-    let label = null;
+    const renderLabel = ({ route, color }) => {
+      const labelText = getLabelText({ route });
 
-    const renderLabel =
-      renderLabelCustom !== undefined
-        ? renderLabelCustom
-        : ({ route, color }) => {
-            const labelText = getLabelText({ route });
+      if (typeof labelText === "string") {
+        return (
+          <Animated.Text style={[styles.label, labelStyle, { color }]}>
+            {labelText}
+          </Animated.Text>
+        );
+      }
 
-            if (typeof labelText === "string") {
-              return (
-                <Animated.Text style={[styles.label, labelStyle, { color }]}>
-                  {labelText}
-                </Animated.Text>
-              );
-            }
+      return labelText;
+    };
 
-            return labelText;
-          };
-
-    if (renderLabel) {
-      const activeLabel = renderLabel({
-        route,
-        focused: true,
-        color: activeColor,
-      });
-      const inactiveLabel = renderLabel({
-        route,
-        focused: false,
-        color: inactiveColor,
-      });
-
-      label = (
-        <View>
-          <Animated.View style={{ opacity: inactiveOpacity }}>
-            {inactiveLabel}
-          </Animated.View>
-          <Animated.View
-            style={[StyleSheet.absoluteFill, { opacity: activeOpacity }]}
-          >
-            {activeLabel}
-          </Animated.View>
-        </View>
-      );
-    }
+    const activeLabel = renderLabel({
+      route,
+      focused: true,
+      color: activeColor,
+    });
+    const inactiveLabel = renderLabel({
+      route,
+      focused: false,
+      color: inactiveColor,
+    });
 
     const tabStyle = StyleSheet.flatten(style);
     const isWidthSet = tabStyle?.width !== undefined;
@@ -178,9 +119,46 @@ export class TabBarItem extends React.Component {
         ? accessibilityLabel
         : getLabelText(scene);
 
+    const borderRadius = 16;
+    const secondaryColor = "#E6CBB8";
+    const tabExtraStyle =
+      tabIndex == 0
+        ? {
+            backgroundColor: secondaryColor,
+            borderBottomRightRadius: borderRadius,
+          }
+        : {
+            backgroundColor: secondaryColor,
+            borderBottomLeftRadius: borderRadius,
+          };
+
+    const label = (
+      <View>
+        <Animated.View
+          style={[
+            styles.item,
+            tabStyle,
+            tabExtraStyle,
+            { opacity: inactiveOpacity },
+          ]}
+        >
+          {inactiveLabel}
+        </Animated.View>
+        <Animated.View
+          style={[
+            StyleSheet.absoluteFill,
+            styles.item,
+            tabStyle,
+            { opacity: activeOpacity },
+          ]}
+        >
+          {activeLabel}
+        </Animated.View>
+      </View>
+    );
+
     return (
-      <PlatformPressable
-        android_ripple={{ borderless: true }}
+      <Pressable
         testID={getTestID(scene)}
         accessible={getAccessible(scene)}
         accessibilityLabel={accessibilityLabel}
@@ -196,10 +174,8 @@ export class TabBarItem extends React.Component {
         onLongPress={onLongPress}
         style={[styles.pressable, tabContainerStyle]}
       >
-        <View pointerEvents="none" style={[styles.item, tabStyle]}>
-          {label}
-        </View>
-      </PlatformPressable>
+        <View pointerEvents="none">{label}</View>
+      </Pressable>
     );
   }
 }

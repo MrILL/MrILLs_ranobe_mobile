@@ -35,8 +35,16 @@ export function RanobeInfoNavigation({ route }) {
         <TabBar
           {...props}
           indicatorStyle={{ opacity: 0 }}
+          activeColor="black"
+          inactiveColor="white"
+          labelStyle={{
+            fontFamily: "Roboto",
+            fontSize: 18,
+            fontWeight: "bold",
+            textTransform: "none",
+          }}
           style={{
-            backgroundColor: "grey",
+            backgroundColor: "#FFE1CC",
             elevation: 0,
           }}
           renderTabBarItem={(props) => <TabBarItem {...props} />}
