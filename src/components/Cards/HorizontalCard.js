@@ -3,7 +3,12 @@ import { StyleSheet } from "react-native";
 import { BaseCard } from "./BaseCard";
 
 export function HorizontalCard(props) {
-  return <BaseCard {...props} styles={styles} />;
+  const newStyles = {
+    ...styles,
+    container: { ...styles.container, ...props.style },
+  };
+
+  return <BaseCard {...props} styles={newStyles} />;
 }
 
 const styles = StyleSheet.create({

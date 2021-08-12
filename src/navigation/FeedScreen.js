@@ -34,11 +34,15 @@ export function FeedScreen({ navigation }) {
   const cardOnPress = (id) =>
     navigation.navigate("RanobeInfo", { ranobeId: id });
 
+  const horizontalCardWidth = window.width * 0.8;
+  const horizontalCardHeight = (horizontalCardWidth * 1080) / 1920 + 50;
+
   return (
     <View style={styles.container}>
       <ScrollView showsVerticalScrollIndicator={false}>
         <MyText style={styles.text_title}>Последние главы</MyText>
         <FlatList
+          horizontal
           data={data}
           renderItem={(v) => {
             return (
@@ -46,19 +50,26 @@ export function FeedScreen({ navigation }) {
                 style={[
                   styles.last_item_container,
                   {
-                    width: window.width * 0.85,
+                    width: horizontalCardWidth,
                   },
                 ]}
               >
                 <HorizontalCard
                   data={v.item}
                   onPress={() => cardOnPress(v.item.id)}
+                  style={{ height: horizontalCardHeight }}
                 />
               </View>
             );
           }}
-          horizontal={true}
+          style={{ paddingLeft: 12 }}
           showsHorizontalScrollIndicator={false}
+          decelerationRate={0}
+          snapToInterval={
+            horizontalCardWidth +
+            styles.last_item_container.marginHorizontal * 2
+          }
+          snapToAlignment={"center"}
         />
 
         <MyText style={styles.text_title}>Популярное</MyText>
@@ -78,7 +89,7 @@ const styles = StyleSheet.create({
   text_title: {
     fontSize: 28,
     marginLeft: 12,
-    marginTop: 16,
+    marginTop: 8,
     marginBottom: 4,
   },
 
@@ -87,11 +98,10 @@ const styles = StyleSheet.create({
     backgroundColor: "#FFE1CC",
     alignItems: "center",
     justifyContent: "center",
-    // paddingTop: 30,
   },
 
   last_item_container: {
-    marginLeft: 14,
+    marginHorizontal: 6,
     paddingTop: 6,
     paddingBottom: 6,
   },

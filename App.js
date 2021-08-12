@@ -14,11 +14,15 @@ export default function App() {
     <>
       <NavigationContainer>
         <Stack.Navigator initialRouteName="Feed">
-          <Stack.Screen name="Feed" component={FeedScreen} />
+          <Stack.Screen
+            name="Feed"
+            component={FeedScreen}
+            options={{ headerShown: false }}
+          />
           <Stack.Screen name="RanobeInfo" component={RanobeInfoNavigation} />
         </Stack.Navigator>
       </NavigationContainer>
-      <StatusBar style="auto" />
+      <StatusBar hidden />
     </>
   );
 }

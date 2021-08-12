@@ -23,10 +23,14 @@ const chapters = Array.from({ length: 20 }, (_, i) => {
 export function RanobeIssueListScreen({ ranobeId }) {
   return (
     <View style={[styles.container, { paddingTop: 2 }]}>
-      <ScrollView showsVerticalScrollIndicator={false} style={styles.container}>
+      <ScrollView
+        showsVerticalScrollIndicator={false}
+        nestedScrollEnabled={true}
+        style={styles.container}
+      >
         {chapters.map((v) => {
           return (
-            <View style={styles.line_container}>
+            <View style={styles.line_container} key={v.id}>
               <View style={styles.title_container}>
                 <MyText numberOfLines={2}>{v.title}</MyText>
               </View>
