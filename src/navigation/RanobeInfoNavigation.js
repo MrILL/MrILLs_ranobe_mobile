@@ -37,16 +37,8 @@ export function RanobeInfoNavigation({ route }) {
           indicatorStyle={{ opacity: 0 }}
           activeColor="black"
           inactiveColor="white"
-          labelStyle={{
-            fontFamily: "Roboto",
-            fontSize: 18,
-            fontWeight: "bold",
-            textTransform: "none",
-          }}
-          style={{
-            backgroundColor: "#FFE1CC",
-            elevation: 0,
-          }}
+          labelStyle={styles.tab_label}
+          style={styles.tab_container}
           renderTabBarItem={(props) => <TabBarItem {...props} />}
         />
       )}
@@ -54,4 +46,17 @@ export function RanobeInfoNavigation({ route }) {
   );
 }
 
-const styles = StyleSheet.create({});
+const styles = StyleSheet.create({
+  tab_container: {
+    paddingBottom: 4,
+    backgroundColor: "#FFE1CC",
+    elevation: 0,
+  },
+
+  tab_label: {
+    fontFamily: "Roboto",
+    fontSize: 18,
+    fontWeight: "bold",
+    textTransform: "none",
+  },
+});

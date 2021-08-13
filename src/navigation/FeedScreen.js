@@ -31,8 +31,8 @@ export function FeedScreen({ navigation }) {
 
   const window = useWindowDimensions();
 
-  const cardOnPress = (id) =>
-    navigation.navigate("RanobeInfo", { ranobeId: id });
+  const cardOnPress = (id, title) =>
+    navigation.navigate("RanobeInfo", { ranobeId: id, title });
 
   const horizontalCardWidth = window.width * 0.8;
   const horizontalCardHeight = (horizontalCardWidth * 1080) / 1920 + 50;
@@ -49,20 +49,18 @@ export function FeedScreen({ navigation }) {
               <View
                 style={[
                   styles.last_item_container,
-                  {
-                    width: horizontalCardWidth,
-                  },
+                  { width: horizontalCardWidth },
                 ]}
               >
                 <HorizontalCard
                   data={v.item}
-                  onPress={() => cardOnPress(v.item.id)}
+                  onPress={() => cardOnPress(v.item.id, v.item.title)}
                   style={{ height: horizontalCardHeight }}
                 />
               </View>
             );
           }}
-          style={{ paddingLeft: 12 }}
+          style={styles.last_container}
           showsHorizontalScrollIndicator={false}
           decelerationRate={0}
           snapToInterval={
@@ -98,6 +96,10 @@ const styles = StyleSheet.create({
     backgroundColor: "#FFE1CC",
     alignItems: "center",
     justifyContent: "center",
+  },
+
+  last_container: {
+    paddingLeft: 12,
   },
 
   last_item_container: {

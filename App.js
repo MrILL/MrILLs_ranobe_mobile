@@ -19,7 +19,11 @@ export default function App() {
             component={FeedScreen}
             options={{ headerShown: false }}
           />
-          <Stack.Screen name="RanobeInfo" component={RanobeInfoNavigation} />
+          <Stack.Screen
+            name="RanobeInfo"
+            component={RanobeInfoNavigation}
+            options={({ route }) => ({ title: route.params.title })}
+          />
         </Stack.Navigator>
       </NavigationContainer>
       <StatusBar hidden />

@@ -1,5 +1,11 @@
 import React from "react";
-import { ScrollView, StyleSheet, View } from "react-native";
+import {
+  Image,
+  ScrollView,
+  StyleSheet,
+  View,
+  useWindowDimensions,
+} from "react-native";
 import { MyText } from "../components/MyText";
 import { DomainIco } from "../components/DomainIco";
 
@@ -43,9 +49,19 @@ const BoldText = (params) => {
 export function RanobeInfoScreen({ ranobeId }) {
   const ranobeData = getData(ranobeId);
 
+  const imageWidth = useWindowDimensions().width;
+  console.log(imageWidth);
+
   return (
-    <ScrollView style={styles.container}>
+    <ScrollView showsVerticalScrollIndicator={false} style={styles.container}>
       <View>
+        <Image
+          style={[styles.image, { height: imageWidth }]}
+          source={{
+            uri: ranobeData.img_url,
+          }}
+        />
+
         {[
           ["Страна:", ranobeData.country],
           ["Год выпуска:", ranobeData.publish_year],
@@ -61,25 +77,10 @@ export function RanobeInfoScreen({ ranobeId }) {
 
         <View style={[styles.line_container, { marginTop: 2 }]}>
           <BoldText style={styles.text}>Главы:</BoldText>
-          <View
-            style={{
-              marginLeft: 4,
-              paddingRight: 4,
-              flexDirection: "row",
-              backgroundColor: "#E6CBB8",
-              borderRadius: 4,
-            }}
-          >
+          <View style={styles.domains_container}>
             {ranobeData.total_issues.map(({ domain, issues }) => {
               return (
-                <View
-                  style={{
-                    flexDirection: "row",
-                    alignItems: "center",
-                    marginRight: 4,
-                  }}
-                  key={domain}
-                >
+                <View style={styles.domains_item} key={domain}>
                   <DomainIco domain={domain} style={styles.ico} />
                   <MyText style={styles.text}>{issues}</MyText>
                 </View>
@@ -90,6 +91,9 @@ export function RanobeInfoScreen({ ranobeId }) {
 
         <BoldText style={styles.text}>Описание:</BoldText>
         <MyText style={styles.text}>{ranobeData.description}</MyText>
+
+        {/* For some spaces in the bot, because paddingBottom in scrollview seems not work  */}
+        <View style={{ height: 8 }} />
       </View>
     </ScrollView>
   );
@@ -99,8 +103,25 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: "#FFE1CC",
-    paddingTop: 4,
     paddingHorizontal: 8,
+  },
+
+  image: {
+    marginVertical: 4,
+  },
+
+  domains_container: {
+    marginLeft: 4,
+    paddingRight: 4,
+    flexDirection: "row",
+    backgroundColor: "#E6CBB8",
+    borderRadius: 4,
+  },
+
+  domains_item: {
+    flexDirection: "row",
+    alignItems: "center",
+    marginRight: 4,
   },
 
   line_container: {

@@ -1,8 +1,8 @@
 import React from "react";
-import { ScrollView, View, StyleSheet } from "react-native";
+import { FlatList, View, StyleSheet } from "react-native";
 import { MyText } from "../components/MyText";
 
-const chapters = Array.from({ length: 20 }, (_, i) => {
+const chapters = Array.from({ length: 100 }, (_, i) => {
   return {
     id: i,
     nomer: i,
@@ -16,32 +16,33 @@ const chapters = Array.from({ length: 20 }, (_, i) => {
         ? "Вчера"
         : i < 13
         ? "3 дня назад"
-        : "21.04.2021",
+        : i < 39
+        ? "21.04.2021"
+        : i < 67
+        ? "03.01.2021"
+        : "12.11.2020",
   };
 });
 
 export function RanobeIssueListScreen({ ranobeId }) {
   return (
-    <View style={[styles.container, { paddingTop: 2 }]}>
-      <ScrollView
+    <View style={styles.container}>
+      <FlatList
         showsVerticalScrollIndicator={false}
-        nestedScrollEnabled={true}
-        style={styles.container}
-      >
-        {chapters.map((v) => {
-          return (
-            <View style={styles.line_container} key={v.id}>
-              <View style={styles.title_container}>
-                <MyText numberOfLines={2}>{v.title}</MyText>
-              </View>
-
-              <View style={styles.date_container}>
-                <MyText style={styles.date_text}>{v.publishData}</MyText>
-              </View>
+        data={chapters}
+        renderItem={({ item: { nomer, title, publishData } }) => (
+          <View style={styles.line_container}>
+            <View style={styles.title_container}>
+              <MyText numberOfLines={2}>{title}</MyText>
             </View>
-          );
-        })}
-      </ScrollView>
+
+            <View style={styles.date_container}>
+              <MyText style={styles.date_text}>{publishData}</MyText>
+            </View>
+          </View>
+        )}
+        keyExtractor={({ id }) => id}
+      />
     </View>
   );
 }
