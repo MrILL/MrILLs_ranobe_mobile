@@ -1,5 +1,7 @@
-import React from "react";
+import React, { useState } from "react";
 import { FlatList, View, StyleSheet } from "react-native";
+import DropDownPicker from "react-native-dropdown-picker";
+import useWindowDimensions from "react-native/Libraries/Utilities/useWindowDimensions";
 import { MyText } from "../components/MyText";
 
 const chapters = Array.from({ length: 100 }, (_, i) => {
@@ -24,12 +26,85 @@ const chapters = Array.from({ length: 100 }, (_, i) => {
   };
 });
 
+const ranobesChapters = chapters.slice(4, 100);
+const ranobelibChapters = chapters.slice(1, 100);
+const ranobehubChapters = chapters.slice(3, 100);
+
+const DomainPicker = ({ value, setValue }) => {
+  const [open, setOpen] = useState(false);
+  const [items, setItems] = useState([
+    { label: "ranobes.com", value: "ranobes.com" },
+    { label: "ranobelib.me", value: "ranobelib.me" },
+    { label: "ranobehub.com", value: "ranobehub.com" },
+  ]);
+
+  return (
+    <DropDownPicker
+      open={open}
+      value={value}
+      items={items}
+      setOpen={setOpen}
+      setValue={setValue}
+      setItems={setItems}
+      style={{
+        borderRadius: 8,
+        borderWidth: 0,
+        backgroundColor: "#E6CBB8",
+      }}
+      textStyle={{
+        fontFamily: "Roboto",
+        fontSize: 16,
+        color: "white",
+        fontWeight: "bold",
+      }}
+      labelProps={{
+        numberOfLines: 1,
+      }}
+      dropDownContainerStyle={{ backgroundColor: "#E6CBB8" }}
+    />
+  );
+};
+
 export function RanobeIssueListScreen({ ranobeId }) {
+  const layout = useWindowDimensions();
+
+  const [domain, setDomain] = useState("ranobes.com");
+
+  const getChapters = (domain) => {
+    switch (domain) {
+      case "ranobes.com":
+        return ranobesChapters;
+      case "ranobelib.me":
+        return ranobelibChapters;
+      case "ranobehub.com":
+        return ranobehubChapters;
+    }
+  };
+  const chaptersList = getChapters(domain);
+
   return (
     <View style={styles.container}>
+      <View
+        style={{
+          position: "absolute",
+          right: 0,
+        }}
+      >
+        <View
+          style={{
+            width: layout.width * 0.55,
+            marginVertical: 4,
+            marginRight: 8,
+          }}
+        >
+          <DomainPicker value={domain} setValue={setDomain} />
+        </View>
+      </View>
+
       <FlatList
         showsVerticalScrollIndicator={false}
-        data={chapters}
+        ListHeaderComponent={() => <View style={{ height: 50 }} />}
+        data={chaptersList}
         renderItem={({ item: { nomer, title, publishData } }) => (
           <View style={styles.line_container}>
             <View style={styles.title_container}>

@@ -50,7 +50,6 @@ export function RanobeInfoScreen({ ranobeId }) {
   const ranobeData = getData(ranobeId);
 
   const imageWidth = useWindowDimensions().width;
-  console.log(imageWidth);
 
   return (
     <ScrollView showsVerticalScrollIndicator={false} style={styles.container}>
