@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { FlatList, View, StyleSheet } from "react-native";
+import { TouchableHighlight, FlatList, View, StyleSheet } from "react-native";
 import DropDownPicker from "react-native-dropdown-picker";
 import useWindowDimensions from "react-native/Libraries/Utilities/useWindowDimensions";
 import { MyText } from "../components/MyText";
@@ -54,7 +54,7 @@ const DomainPicker = ({ value, setValue }) => {
       textStyle={{
         fontFamily: "Roboto",
         fontSize: 16,
-        color: "white",
+        color: "black",
         fontWeight: "bold",
       }}
       labelProps={{
@@ -65,12 +65,12 @@ const DomainPicker = ({ value, setValue }) => {
   );
 };
 
-export function RanobeIssueListScreen({ ranobeId }) {
+export function RanobeIssueListScreen({ navigation, ranobeId }) {
   const layout = useWindowDimensions();
 
   const [domain, setDomain] = useState("ranobes.com");
 
-  const getChapters = (domain) => {
+  const getChapters = (ranobeId, domain) => {
     switch (domain) {
       case "ranobes.com":
         return ranobesChapters;
@@ -80,7 +80,7 @@ export function RanobeIssueListScreen({ ranobeId }) {
         return ranobehubChapters;
     }
   };
-  const chaptersList = getChapters(domain);
+  const chaptersList = getChapters(ranobeId, domain);
 
   return (
     <View style={styles.container}>
@@ -103,21 +103,61 @@ export function RanobeIssueListScreen({ ranobeId }) {
 
       <FlatList
         showsVerticalScrollIndicator={false}
-        ListHeaderComponent={() => <View style={{ height: 50 }} />}
+        ListHeaderComponent={() => (
+          <View
+            style={{
+              height: 59,
+              borderBottomColor: "white",
+              borderBottomWidth: 1,
+            }}
+          />
+        )}
         data={chaptersList}
         renderItem={({ item: { nomer, title, publishData } }) => (
-          <View style={styles.line_container}>
-            <View style={styles.title_container}>
-              <MyText numberOfLines={2}>{title}</MyText>
-            </View>
+          <TouchableHighlight
+            activeOpacity={0.6}
+            underlayColor="#E6C8B8"
+            onPress={() => navigation.navigate("Chapter", { ranobeId, domain })}
+          >
+            <View style={styles.line_container}>
+              <View style={styles.title_container}>
+                <MyText numberOfLines={2}>{title}</MyText>
+              </View>
 
-            <View style={styles.date_container}>
-              <MyText style={styles.date_text}>{publishData}</MyText>
+              <View style={styles.date_container}>
+                <MyText style={styles.date_text}>{publishData}</MyText>
+              </View>
             </View>
-          </View>
+          </TouchableHighlight>
         )}
         keyExtractor={({ id }) => id}
       />
+
+      <View
+        style={{
+          position: "absolute",
+          right: 16,
+          bottom: 16,
+          height: 50,
+          alignItems: "center",
+          justifyContent: "center",
+          width: "35%",
+          borderRadius: 8,
+          backgroundColor: "#E6CBB8",
+        }}
+      >
+        <View>
+          <MyText
+            style={{
+              fontSize: 16,
+              fontWeight: "bold",
+              color: "black",
+            }}
+          >
+            Продолжить
+          </MyText>
+        </View>
+      </View>
     </View>
   );
 }

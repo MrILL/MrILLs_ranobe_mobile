@@ -4,6 +4,7 @@ import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { FeedScreen } from "./src/navigation/FeedScreen";
 import { RanobeInfoNavigation } from "./src/navigation/RanobeInfoNavigation";
+import { ChapterScreen } from "./src/navigation/ChapterScreen";
 
 const Stack = createNativeStackNavigator();
 
@@ -24,6 +25,7 @@ export default function App() {
             component={RanobeInfoNavigation}
             options={({ route }) => ({ title: route.params.title })}
           />
+          <Stack.Screen name="Chapter" component={ChapterScreen} />
         </Stack.Navigator>
       </NavigationContainer>
       <StatusBar hidden />

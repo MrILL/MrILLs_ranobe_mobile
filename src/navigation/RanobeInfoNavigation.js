@@ -5,7 +5,7 @@ import { TabBar, TabView } from "react-native-tab-view";
 import { RanobeInfoScreen } from "./RanobeInfoScreen";
 import { RanobeIssueListScreen } from "./RanobeIssueListScreen";
 
-export function RanobeInfoNavigation({ route }) {
+export function RanobeInfoNavigation({ route, navigation }) {
   const { ranobeId } = route.params;
 
   const [index, setIndex] = React.useState(0);
@@ -22,9 +22,16 @@ export function RanobeInfoNavigation({ route }) {
       renderScene={({ route }) => {
         switch (route.key) {
           case "info":
-            return <RanobeInfoScreen ranobeId={ranobeId} />;
+            return (
+              <RanobeInfoScreen navigation={navigation} ranobeId={ranobeId} />
+            );
           case "issues":
-            return <RanobeIssueListScreen ranobeId={ranobeId} />;
+            return (
+              <RanobeIssueListScreen
+                navigation={navigation}
+                ranobeId={ranobeId}
+              />
+            );
           default:
             return null;
         }
