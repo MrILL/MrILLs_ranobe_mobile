@@ -10,13 +10,16 @@ export function ChapterScreen({ route }) {
   };
 
   const chapter = getChapter(ranobeId, domain);
-  console.log(chapter);
 
   return (
-    <View style={{ flex: 1 }}>
+    <View style={styles.container}>
       <WebView source={{ html: chapter.body }} />
     </View>
   );
 }
 
-const styles = StyleSheet.create({});
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+  },
+});

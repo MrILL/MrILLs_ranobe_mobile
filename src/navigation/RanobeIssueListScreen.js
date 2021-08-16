@@ -4,27 +4,25 @@ import DropDownPicker from "react-native-dropdown-picker";
 import useWindowDimensions from "react-native/Libraries/Utilities/useWindowDimensions";
 import { MyText } from "../components/MyText";
 
-const chapters = Array.from({ length: 100 }, (_, i) => {
-  return {
-    id: i,
-    nomer: i,
-    title: `${28 - Math.floor(i / 10)} - ${
-      187 - i
-    } Юпитер / Jupiter, the Bringer of Jollity`,
-    publishData:
-      i < 2
-        ? "Сегодня"
-        : i < 7
-        ? "Вчера"
-        : i < 13
-        ? "3 дня назад"
-        : i < 39
-        ? "21.04.2021"
-        : i < 67
-        ? "03.01.2021"
-        : "12.11.2020",
-  };
-});
+const chapters = Array.from({ length: 100 }, (_, i) => ({
+  id: i,
+  nomer: i,
+  title: `${28 - Math.floor(i / 10)} - ${
+    187 - i
+  } Юпитер / Jupiter, the Bringer of Jollity`,
+  publishData:
+    i < 2
+      ? "Сегодня"
+      : i < 7
+      ? "Вчера"
+      : i < 13
+      ? "3 дня назад"
+      : i < 39
+      ? "21.04.2021"
+      : i < 67
+      ? "03.01.2021"
+      : "12.11.2020",
+}));
 
 const ranobesChapters = chapters.slice(4, 100);
 const ranobelibChapters = chapters.slice(1, 100);
@@ -46,24 +44,34 @@ const DomainPicker = ({ value, setValue }) => {
       setOpen={setOpen}
       setValue={setValue}
       setItems={setItems}
-      style={{
-        borderRadius: 8,
-        borderWidth: 0,
-        backgroundColor: "#E6CBB8",
-      }}
-      textStyle={{
-        fontFamily: "Roboto",
-        fontSize: 16,
-        color: "black",
-        fontWeight: "bold",
-      }}
+      style={dropdownPickerStyles.container}
+      textStyle={dropdownPickerStyles.text}
       labelProps={{
         numberOfLines: 1,
       }}
-      dropDownContainerStyle={{ backgroundColor: "#E6CBB8" }}
+      dropDownContainerStyle={dropdownPickerStyles.dropdown_container}
     />
   );
 };
+
+const dropdownPickerStyles = StyleSheet.create({
+  container: {
+    borderRadius: 8,
+    borderWidth: 0,
+    backgroundColor: "#E6CBB8",
+  },
+
+  text: {
+    fontFamily: "Roboto",
+    fontSize: 16,
+    color: "black",
+    fontWeight: "bold",
+  },
+
+  dropdown_container: {
+    backgroundColor: "#E6CBB8",
+  },
+});
 
 export function RanobeIssueListScreen({ navigation, ranobeId }) {
   const layout = useWindowDimensions();
@@ -85,33 +93,19 @@ export function RanobeIssueListScreen({ navigation, ranobeId }) {
   return (
     <View style={styles.container}>
       <View
-        style={{
-          position: "absolute",
-          right: 0,
-        }}
-      >
-        <View
-          style={{
+        style={[
+          styles.dropdownPicker_container,
+          {
             width: layout.width * 0.55,
-            marginVertical: 4,
-            marginRight: 8,
-          }}
-        >
-          <DomainPicker value={domain} setValue={setDomain} />
-        </View>
+          },
+        ]}
+      >
+        <DomainPicker value={domain} setValue={setDomain} />
       </View>
 
       <FlatList
         showsVerticalScrollIndicator={false}
-        ListHeaderComponent={() => (
-          <View
-            style={{
-              height: 59,
-              borderBottomColor: "white",
-              borderBottomWidth: 1,
-            }}
-          />
-        )}
+        ListHeaderComponent={() => <View style={styles.list_header} />}
         data={chaptersList}
         renderItem={({ item: { nomer, title, publishData } }) => (
           <TouchableHighlight
@@ -133,30 +127,8 @@ export function RanobeIssueListScreen({ navigation, ranobeId }) {
         keyExtractor={({ id }) => id}
       />
 
-      <View
-        style={{
-          position: "absolute",
-          right: 16,
-          bottom: 16,
-          height: 50,
-          alignItems: "center",
-          justifyContent: "center",
-          width: "35%",
-          borderRadius: 8,
-          backgroundColor: "#E6CBB8",
-        }}
-      >
-        <View>
-          <MyText
-            style={{
-              fontSize: 16,
-              fontWeight: "bold",
-              color: "black",
-            }}
-          >
-            Продолжить
-          </MyText>
-        </View>
+      <View style={styles.continueBtn_container}>
+        <MyText style={styles.continueBtn_text}>Продолжить</MyText>
       </View>
     </View>
   );
@@ -188,5 +160,36 @@ const styles = StyleSheet.create({
 
   date_text: {
     textAlign: "center",
+  },
+
+  dropdownPicker_container: {
+    position: "absolute",
+    right: 0,
+    marginVertical: 4,
+    marginRight: 8,
+  },
+
+  list_header: {
+    height: 59,
+    borderBottomColor: "white",
+    borderBottomWidth: 1,
+  },
+
+  continueBtn_container: {
+    position: "absolute",
+    right: 16,
+    bottom: 16,
+    height: 50,
+    alignItems: "center",
+    justifyContent: "center",
+    width: "35%",
+    borderRadius: 8,
+    backgroundColor: "#E6CBB8",
+  },
+
+  continueBtn_text: {
+    fontSize: 16,
+    fontWeight: "bold",
+    color: "black",
   },
 });
